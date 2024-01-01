@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {{>headers}}
+    <title>Document</title> 
+         
+</head>
+<body>
+    {{>navbar}}
+    <div class="container" id="app" style="max-width: 800px;
+    margin: 50px auto;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);" >
+    <h1>Product List</h1>
+
+    <!-- Product List -->
+    <ul id="product-list"></ul>
+
+    <!-- Add Product Form -->
+    <div id="add-product-form">
+        <h2>Add Product</h2>
+        <form id="product-form">
+            <label for="productName">Name:</label>
+            <input type="text" id="productName" required>
+            
+            <label for="productPrice">Price:</label>
+            <input type="number" id="productPrice" required>
+
+          <br>  <button type="button" onclick="addProduct()" style="margin-top: 20px;
+}">Add Product</button>
+        </form>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+    showProductList();
+
+    document.getElementById('login-page').classList.remove('hidden');
+});
+
+// Sample product data
+let products = [
+    { id: 1, name: 'Product 1', price: 10.99 },
+    { id: 2, name: 'Product 2', price: 20.49 },
+];
+
+function showProductList() {
+    const productList = document.getElementById('product-list');
+    productList.innerHTML = '';
+
+    products.forEach(product => {
+        const li = document.createElement('li');
+        li.innerHTML = `${product.name} - $${product.price.toFixed(2)} <button onclick="deleteProduct(${product.id})">Delete</button>`;
+        productList.appendChild(li);
+    });
+}
+
+function addProduct() {
+    const productName = document.getElementById('productName').value;
+    const productPrice = parseFloat(document.getElementById('productPrice').value);
+
+    if (productName.trim() !== '' && !isNaN(productPrice)) {
+        const newProduct = {
+            id: products.length + 1,
+            name: productName,
+            price: productPrice,
+        };
+
+        products.push(newProduct);
+        showProductList();
+        document.getElementById('productName').value = '';
+        document.getElementById('productPrice').value = '';
+    } else {
+        alert('Please enter valid product name and price.');
+    }
+}
+
+function deleteProduct(productId) {
+    products = products.filter(product => product.id !== productId);
+    showProductList();
+}
+    </script>
+</body>
+</html>
